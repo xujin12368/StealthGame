@@ -4,6 +4,7 @@
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -13,4 +14,39 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+}
+
+void AFPSGameMode::CompleteGame(APawn * InstigatorPawn)
+{
+	if (InstigatorPawn == nullptr)
+	{
+		return;
+	}
+
+	InstigatorPawn->DisableInput(nullptr);
+
+	TArray<AActor*> OutAcotors;
+	UGameplayStatics::GetAllActorsOfClass(this, SpectatingView, OutAcotors);
+
+	if (OutAcotors.Num() > 0)
+	{
+		AActor* SpectatingActor = OutAcotors[0];
+
+		APlayerController* PC = Cast<APlayerController>(InstigatorPawn->GetController());
+		if (PC)
+		{
+			PC->SetViewTargetWithBlend(SpectatingActor, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No player controller"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Spectating Actor is missing.Cannot switch tartget view."));
+	}
+
+	OnMissionComplete(InstigatorPawn);
+
 }
