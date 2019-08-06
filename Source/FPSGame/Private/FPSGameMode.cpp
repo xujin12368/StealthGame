@@ -16,7 +16,7 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 }
 
-void AFPSGameMode::CompleteGame(APawn * InstigatorPawn)
+void AFPSGameMode::CompleteGame(APawn * InstigatorPawn, bool bMissionSuccess)
 {
 	if (InstigatorPawn == nullptr)
 	{
@@ -47,6 +47,6 @@ void AFPSGameMode::CompleteGame(APawn * InstigatorPawn)
 		UE_LOG(LogTemp, Warning, TEXT("Spectating Actor is missing.Cannot switch tartget view."));
 	}
 
-	OnMissionComplete(InstigatorPawn);
+	OnMissionComplete(InstigatorPawn, bMissionSuccess);
 
 }

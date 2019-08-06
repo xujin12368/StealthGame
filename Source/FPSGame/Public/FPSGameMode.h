@@ -20,11 +20,11 @@ public:
 	AFPSGameMode();
 
 	// For cpp, when player reach the conditions.
-	void CompleteGame(APawn* InstigatorPawn);
+	void CompleteGame(APawn* InstigatorPawn, bool bMissionSuccess);
 
 	// For BP, when player enter the area, it will display more infos.
 	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
-	void OnMissionComplete(APawn* InstigatorPawn);
+	void OnMissionComplete(APawn* InstigatorPawn, bool bMissionSuccess);
 };
 
 
