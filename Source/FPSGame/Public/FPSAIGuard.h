@@ -41,7 +41,11 @@ protected:
 
 	FTimerHandle TimerHandle_ResetRotation;
 
+	UPROPERTY(ReplicatedUsing = OnRep_GuardState)
 	EAIState GuardState;
+
+	UFUNCTION()
+	void OnRep_GuardState();
 
 	void SetAIState(EAIState NewState);
 
