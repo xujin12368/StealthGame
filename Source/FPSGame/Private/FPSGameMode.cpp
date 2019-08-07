@@ -5,6 +5,7 @@
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPSGameState.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -14,6 +15,8 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	GameStateClass = AFPSGameState::StaticClass(); // 为GM指定GS
 }
 
 void AFPSGameMode::CompleteGame(APawn * InstigatorPawn, bool bMissionSuccess)
@@ -22,8 +25,6 @@ void AFPSGameMode::CompleteGame(APawn * InstigatorPawn, bool bMissionSuccess)
 	{
 		return;
 	}
-
-	InstigatorPawn->DisableInput(nullptr);
 
 	TArray<AActor*> OutAcotors;
 	UGameplayStatics::GetAllActorsOfClass(this, SpectatingView, OutAcotors);
@@ -45,6 +46,12 @@ void AFPSGameMode::CompleteGame(APawn * InstigatorPawn, bool bMissionSuccess)
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Spectating Actor is missing.Cannot switch tartget view."));
+	}
+
+	AFPSGameState* GS = GetGameState<AFPSGameState>(); // GetGameState()是一个模板函数
+	if (GS)
+	{
+		GS->MultiCastHandleMission(InstigatorPawn, bMissionSuccess);
 	}
 
 	OnMissionComplete(InstigatorPawn, bMissionSuccess);
