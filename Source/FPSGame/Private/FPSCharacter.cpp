@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/PawnNoiseEmitterComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 AFPSCharacter::AFPSCharacter()
@@ -129,4 +130,14 @@ void AFPSCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSCharacter, bIsCarryingObj);
+
+	// DOREPLIFETIME_CONDITION()是只复制给Owner这一个客户端的规则，可以节省带宽
+	// DOREPLIFETIME_CONDITION(AFPSCharacter, bIsCarryingObj, COND_OwnerOnly);
 }

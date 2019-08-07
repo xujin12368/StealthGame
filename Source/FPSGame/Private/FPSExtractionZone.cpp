@@ -36,7 +36,10 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 			if (MyChracter->bIsCarryingObj)
 			{
 				AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
-				GM->CompleteGame(MyChracter, true);
+				if (GM) // 此处检测是因为GameMode在Client上是nullptr，如果不检测会引起崩溃
+				{
+					GM->CompleteGame(MyChracter, true);
+				}
 			}
 			else
 			{
