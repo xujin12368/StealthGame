@@ -17,5 +17,5 @@ class FPSGAME_API AFPSGameState : public AGameStateBase
 public:
 	// 使用网络多播，让Server把信息发送给所有的Client
 	UFUNCTION(NetMulticast, Reliable)
-	void MultiCastHandleMission(APawn* Pawn, bool bMissionSuccess);
+	void MultiCastHandleMission(APawn* InstigatorPawn, bool bMissionSuccess);
 };
