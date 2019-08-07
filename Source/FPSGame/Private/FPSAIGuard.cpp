@@ -50,6 +50,8 @@ void AFPSAIGuard::SetAIState(EAIState NewState)
 
 	GuardState = NewState;
 
+	// 写在此处是因为SetAIState只有Server调用。
+	// 为了让Server也调用客户端的复制函数，所以卸载Server调用的函数里面。以此达到同步的目的。
 	OnRep_GuardState();
 }
 
@@ -109,6 +111,9 @@ void AFPSAIGuard::HandleTimer()
 	SetAIState(EAIState::Idle);
 }
 
+// 这个函数设定客户端复制规则。
+// 其中DOREPLIFETIME这个宏是用来设定规则的。
+// 此处使用的是默认规则。即复制给所有的客户端。
 void AFPSAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

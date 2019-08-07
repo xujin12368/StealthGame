@@ -41,6 +41,8 @@ protected:
 
 	FTimerHandle TimerHandle_ResetRotation;
 
+	// 加上属性并指定函数，表示此变量可以被复制。
+	// 指定的函数只会在客户端被调用，Server一般不会调用。
 	UPROPERTY(ReplicatedUsing = OnRep_GuardState)
 	EAIState GuardState;
 
