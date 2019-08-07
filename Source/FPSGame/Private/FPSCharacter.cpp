@@ -49,6 +49,21 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 
+void AFPSCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (!IsLocallyControlled())
+	{
+		// 关于为什么是用CameraComponent来设置旋转，而不是Mesh1PComponent
+		// 因为设置Mesh1PComponent层级太低，会导致模型错位
+		FRotator NewRot = CameraComponent->GetRelativeTransform().Rotator();
+		NewRot.Pitch = RemoteViewPitch * 360.f / 255.f; // 此处的计算是为了还原Remote View Pitch的值，因为它在Pawn源码中被压缩了
+
+		CameraComponent->SetRelativeRotation(NewRot);
+	}
+}
+
 void AFPSCharacter::Fire()
 {
 	ServerFire();
