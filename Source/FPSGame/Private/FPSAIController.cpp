@@ -9,6 +9,8 @@
 
 void AFPSAIController::BeginPlay()
 {
+	Super::BeginPlay();
+
 	if (BlackboardData == nullptr || BehaviorTree == nullptr)
 	{
 		return;
@@ -33,6 +35,8 @@ void AFPSAIController::BeginPlay()
 
 void AFPSAIController::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	if (TargetActors.Num() == 0)
 	{
 		return;
